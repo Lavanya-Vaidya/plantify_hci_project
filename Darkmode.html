@@ -1,0 +1,2132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plantify - Find Your Perfect Plant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #faf9f6;
+      --bg-secondary: #f4f1ea;
+      --text-primary: #2c3e2f;
+      --text-secondary: #5a6c5d;
+      --accent-green: #4a7c59;
+      --accent-terra: #d4a574;
+      --accent-sage: #9db29b;
+      --shadow-soft: rgba(44, 62, 47, 0.08);
+      --shadow-medium: rgba(44, 62, 47, 0.12);
+      --border-color: rgba(74, 124, 89, 0.15);
+      --gradient-start: #faf9f6;
+      --gradient-end: #f0ede3;
+      --card-bg: rgba(255, 255, 255, 0.7);
+      --card-solid: white;
+      --upload-border: rgba(74, 124, 89, 0.15);
+      --modal-overlay: rgba(44, 62, 47, 0.8);
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #0f1410;
+      --bg-secondary: #1a2118;
+      --text-primary: #e8f5e9;
+      --text-secondary: #b8c9ba;
+      --accent-green: #7fdb9f;
+      --accent-terra: #e8b886;
+      --accent-sage: #a8d5a6;
+      --shadow-soft: rgba(0, 0, 0, 0.4);
+      --shadow-medium: rgba(0, 0, 0, 0.6);
+      --border-color: rgba(127, 219, 159, 0.25);
+      --gradient-start: #0f1410;
+      --gradient-end: #1a2e1f;
+      --card-bg: rgba(26, 33, 24, 0.95);
+      --card-solid: #1a2118;
+      --upload-border: rgba(127, 219, 159, 0.3);
+      --modal-overlay: rgba(15, 20, 16, 0.92);
+    }
+
+    [data-theme="dark"] body::before {
+      background: radial-gradient(circle, rgba(127, 219, 159, 0.12) 0%, transparent 70%);
+    }
+
+    [data-theme="dark"] body::after {
+      background: radial-gradient(circle, rgba(168, 213, 166, 0.08) 0%, transparent 70%);
+    }
+
+    [data-theme="dark"] .upload-section {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-color: var(--accent-green);
+    }
+
+    [data-theme="dark"] .upload-section:hover {
+      background: rgba(26, 33, 24, 1);
+      box-shadow: 0 8px 40px rgba(127, 219, 159, 0.2);
+    }
+
+    [data-theme="dark"] .upload-btn {
+      background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-sage) 100%);
+      box-shadow: 0 4px 20px rgba(127, 219, 159, 0.4);
+    }
+
+    [data-theme="dark"] .upload-btn:hover {
+      box-shadow: 0 6px 30px rgba(127, 219, 159, 0.5);
+    }
+
+    [data-theme="dark"] .plant-card {
+      background: var(--card-solid);
+      border: 1px solid rgba(127, 219, 159, 0.15);
+    }
+
+    [data-theme="dark"] .plant-card:hover {
+      border-color: var(--accent-green);
+      box-shadow: 0 12px 40px rgba(127, 219, 159, 0.25);
+    }
+
+    [data-theme="dark"] .plant-card::before {
+      background: linear-gradient(90deg, var(--accent-green), var(--accent-sage));
+    }
+
+    [data-theme="dark"] .plant-image {
+      background: linear-gradient(135deg, #1f3d2a 0%, #2a4d34 100%);
+    }
+
+    [data-theme="dark"] .tag {
+      background: rgba(26, 33, 24, 0.8);
+      border-color: rgba(127, 219, 159, 0.3);
+      color: var(--accent-green);
+    }
+
+    [data-theme="dark"] .tag.light { 
+      background: rgba(232, 184, 134, 0.15); 
+      color: #e8b886; 
+      border-color: rgba(232, 184, 134, 0.4); 
+    }
+
+    [data-theme="dark"] .tag.medium { 
+      background: rgba(127, 219, 159, 0.15); 
+      color: var(--accent-green); 
+      border-color: var(--accent-green); 
+    }
+
+    [data-theme="dark"] .tag.low { 
+      background: rgba(168, 213, 166, 0.15); 
+      color: var(--accent-sage); 
+      border-color: var(--accent-sage); 
+    }
+
+    [data-theme="dark"] .detail-tag {
+      background: rgba(26, 33, 24, 0.8);
+      border-color: rgba(127, 219, 159, 0.3);
+      color: var(--accent-green);
+    }
+
+    [data-theme="dark"] .detail-tag.light { 
+      background: rgba(232, 184, 134, 0.2); 
+      color: #e8b886; 
+      border-color: rgba(232, 184, 134, 0.5); 
+    }
+
+    [data-theme="dark"] .detail-tag.medium { 
+      background: rgba(127, 219, 159, 0.2); 
+      color: var(--accent-green); 
+      border-color: var(--accent-green); 
+    }
+
+    [data-theme="dark"] .detail-tag.low { 
+      background: rgba(168, 213, 166, 0.2); 
+      color: var(--accent-sage); 
+      border-color: var(--accent-sage); 
+    }
+
+    [data-theme="dark"] .match-fill {
+      background: linear-gradient(
+        90deg,
+        var(--accent-green) 0%,
+        var(--accent-sage) 50%,
+        var(--accent-green) 100%
+      );
+    }
+
+    [data-theme="dark"] .analysis-info {
+      background: var(--card-solid);
+      border: 1px solid rgba(127, 219, 159, 0.2);
+    }
+
+    [data-theme="dark"] .care-item {
+      background: rgba(15, 20, 16, 0.5);
+      border-color: rgba(127, 219, 159, 0.2);
+    }
+
+    [data-theme="dark"] .care-item:hover {
+      background: rgba(26, 33, 24, 0.8);
+      border-color: var(--accent-green);
+    }
+
+    [data-theme="dark"] .plant-scroll-item {
+      background: rgba(26, 33, 24, 0.3);
+    }
+
+    [data-theme="dark"] .plant-scroll-item:hover {
+      background: rgba(26, 33, 24, 0.6);
+    }
+
+    [data-theme="dark"] .plant-scroll-item.active {
+      background: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-sage) 100%);
+    }
+
+    [data-theme="dark"] .detail-section {
+      background: var(--card-solid);
+      border: 1px solid rgba(127, 219, 159, 0.15);
+    }
+
+    [data-theme="dark"] .detail-section:hover {
+      border-color: rgba(127, 219, 159, 0.3);
+      box-shadow: 0 4px 30px rgba(127, 219, 159, 0.2);
+    }
+
+    [data-theme="dark"] .theme-toggle {
+      background: var(--card-solid);
+      border-color: var(--accent-green);
+      box-shadow: 0 4px 25px rgba(127, 219, 159, 0.3);
+    }
+
+    [data-theme="dark"] .theme-toggle:hover {
+      box-shadow: 0 8px 35px rgba(127, 219, 159, 0.4);
+      background: linear-gradient(135deg, rgba(26, 33, 24, 1) 0%, rgba(31, 61, 42, 0.8) 100%);
+    }
+
+    [data-theme="dark"] .close-modal {
+      background: var(--card-solid);
+      border-color: var(--accent-green);
+    }
+
+    [data-theme="dark"] .close-modal:hover {
+      background: var(--accent-green);
+      color: #0f1410;
+    }
+
+    [data-theme="dark"] .benefits-list li {
+      border-bottom-color: rgba(127, 219, 159, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Mono', monospace;
+      background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.3s ease;
+    }
+
+    /* Decorative background elements */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      right: -20%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(157, 178, 155, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -30%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(212, 165, 116, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float 15s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-30px, 30px) scale(1.05); }
+    }
+
+    /* Dark Mode Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      z-index: 999;
+      background: var(--card-solid);
+      border: 2px solid var(--border-color);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 20px var(--shadow-medium);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: floatIn 0.6s ease-out;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-4px) rotate(15deg);
+      box-shadow: 0 8px 30px var(--shadow-medium);
+      border-color: var(--accent-green);
+    }
+
+    .theme-toggle:active {
+      transform: translateY(-2px) rotate(0deg) scale(0.95);
+    }
+
+    .theme-icon {
+      font-size: 1.8rem;
+      transition: transform 0.4s ease;
+    }
+
+    .theme-toggle:hover .theme-icon {
+      transform: rotate(180deg) scale(1.1);
+    }
+
+    @keyframes floatIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Micro Animations */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-3deg); }
+      75% { transform: rotate(3deg); }
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 5px var(--accent-green); }
+      50% { box-shadow: 0 0 20px var(--accent-green), 0 0 30px var(--accent-sage); }
+    }
+
+    /* Apply micro animations */
+    .upload-icon {
+      animation: bounce 2s ease-in-out infinite, wiggle 3s ease-in-out infinite;
+    }
+
+    .plant-card:hover .plant-image {
+      animation: pulse 0.6s ease-in-out;
+    }
+
+    .match-fill {
+      background: linear-gradient(
+        90deg,
+        var(--accent-green) 0%,
+        var(--accent-sage) 50%,
+        var(--accent-green) 100%
+      );
+      background-size: 200% 100%;
+      animation: fillBar 1.5s ease-out backwards, shimmer 3s linear infinite;
+    }
+
+    .detail-emoji {
+      animation: bounce 2s ease-in-out infinite, pulse 3s ease-in-out infinite;
+    }
+
+    .upload-btn:hover {
+      animation: pulse 0.6s ease-in-out infinite;
+    }
+
+    .tag {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tag:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 4px 12px var(--shadow-medium);
+    }
+
+    .scroll-emoji {
+      transition: transform 0.3s ease;
+    }
+
+    .plant-scroll-item:hover .scroll-emoji {
+      animation: wiggle 0.5s ease-in-out;
+    }
+
+    .benefit-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .benefits-list li:hover .benefit-icon {
+      transform: scale(1.3) rotate(10deg);
+    }
+
+    .care-item {
+      transition: all 0.3s ease;
+    }
+
+    .care-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 20px var(--shadow-soft);
+      border-color: var(--accent-green);
+    }
+
+    .analysis-item {
+      transition: all 0.3s ease;
+    }
+
+    .analysis-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .analysis-item:hover .color-swatch {
+      animation: pulse 0.6s ease-in-out, glow 1.5s ease-in-out infinite;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 600;
+      color: var(--accent-green);
+      margin-bottom: 0.5rem;
+      font-style: italic;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Upload Section */
+    .upload-section {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 2px dashed var(--upload-border);
+      border-radius: 24px;
+      padding: 3rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+
+    .upload-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-green), var(--accent-terra), var(--accent-sage));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .upload-section:hover::before,
+    .upload-section.active::before {
+      opacity: 1;
+    }
+
+    .upload-section:hover {
+      border-color: var(--accent-green);
+      box-shadow: 0 8px 30px var(--shadow-medium);
+      transform: translateY(-4px);
+    }
+
+    .upload-section.active {
+      border-color: var(--accent-green);
+      background: rgba(74, 124, 89, 0.05);
+    }
+
+    .upload-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.6;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .upload-label {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+      color: var(--text-primary);
+    }
+
+    .upload-hint {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    #imageInput {
+      display: none;
+    }
+
+    .upload-btn {
+      background: var(--accent-green);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1rem;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: 0 4px 15px rgba(74, 124, 89, 0.3);
+    }
+
+    .upload-btn:hover {
+      background: #3a6347;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(74, 124, 89, 0.4);
+    }
+
+    .upload-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Image Preview */
+    #imagePreview {
+      margin-top: 2rem;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px var(--shadow-medium);
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    #imagePreview img {
+      max-width: 100%;
+      max-height: 400px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Analysis Info */
+    .analysis-info {
+      background: var(--card-solid);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 4px 20px var(--shadow-soft);
+      display: none;
+      animation: fadeInUp 0.6s ease-out;
+      transition: background 0.3s ease;
+    }
+
+    .analysis-info.visible {
+      display: block;
+    }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .analysis-item {
+      text-align: center;
+    }
+
+    .analysis-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .analysis-value {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent-green);
+    }
+
+    .color-swatch {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 0 auto 0.5rem;
+      box-shadow: 0 4px 15px var(--shadow-medium);
+      border: 3px solid white;
+    }
+
+    /* Results Section */
+    .results-section {
+      display: none;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .results-section.visible {
+      display: block;
+    }
+
+    .results-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .results-title {
+      font-family: 'Fraunces', serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: var(--accent-green);
+      margin-bottom: 0.5rem;
+    }
+
+    .results-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* Plant Cards Grid */
+    .plants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .plant-card {
+      background: var(--card-solid);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px var(--shadow-soft);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      animation: fadeInUp 0.6s ease-out backwards;
+      cursor: pointer;
+    }
+
+    .plant-card:nth-child(1) { animation-delay: 0.1s; }
+    .plant-card:nth-child(2) { animation-delay: 0.2s; }
+    .plant-card:nth-child(3) { animation-delay: 0.3s; }
+    .plant-card:nth-child(4) { animation-delay: 0.4s; }
+    .plant-card:nth-child(5) { animation-delay: 0.5s; }
+
+    .plant-card:hover {
+      transform: translateY(-8px) rotate(-1deg);
+      box-shadow: 0 12px 40px var(--shadow-medium);
+    }
+
+    .plant-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--accent-green), var(--accent-sage));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .plant-card:hover::before {
+      opacity: 1;
+    }
+
+    .plant-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: linear-gradient(135deg, var(--accent-sage) 0%, var(--accent-green) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+
+    .plant-content {
+      padding: 1.5rem;
+    }
+
+    .plant-name {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .plant-scientific {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .plant-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 1px solid var(--border-color);
+    }
+
+    .tag.light { background: #fff9e6; color: #b8860b; border-color: #b8860b; }
+    .tag.medium { background: #e8f5e9; color: #2e7d32; border-color: #2e7d32; }
+    .tag.low { background: #e3f2fd; color: #1565c0; border-color: #1565c0; }
+
+    .plant-description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .match-score {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .match-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+    }
+
+    .match-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .match-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-green), var(--accent-sage));
+      border-radius: 10px;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fillBar 1.5s ease-out backwards;
+    }
+
+    @keyframes fillBar {
+      from { width: 0; }
+    }
+
+    .match-percentage {
+      font-weight: 700;
+      color: var(--accent-green);
+      min-width: 40px;
+      text-align: right;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Loading State */
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      display: none;
+    }
+
+    .loading.visible {
+      display: block;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid var(--bg-secondary);
+      border-top-color: var(--accent-green);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+    }
+
+    /* Plant Detail Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--modal-overlay);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-overlay.visible {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: var(--bg-primary);
+      border-radius: 24px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Horizontal Plant Scroll */
+    .plant-scroll-container {
+      background: var(--card-solid);
+      border-bottom: 2px solid var(--border-color);
+      padding: 1.5rem 1rem 1rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      position: relative;
+      transition: background 0.3s ease;
+    }
+
+    .plant-scroll-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .plant-scroll-container::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+      border-radius: 10px;
+    }
+
+    .plant-scroll-container::-webkit-scrollbar-thumb {
+      background: var(--accent-green);
+      border-radius: 10px;
+    }
+
+    .plant-scroll {
+      display: flex;
+      gap: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .plant-scroll-item {
+      flex-shrink: 0;
+      width: 100px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0.75rem;
+      border-radius: 12px;
+      border: 2px solid transparent;
+    }
+
+    .plant-scroll-item:hover {
+      background: var(--bg-secondary);
+      transform: translateY(-2px);
+    }
+
+    .plant-scroll-item.active {
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    .plant-scroll-item.active .scroll-emoji {
+      transform: scale(1.2);
+    }
+
+    .plant-scroll-item.active .scroll-name {
+      color: white;
+      font-weight: 700;
+    }
+
+    .scroll-emoji {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      display: block;
+      transition: transform 0.3s;
+    }
+
+    .scroll-name {
+      font-size: 0.7rem;
+      color: var(--text-primary);
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    /* Modal Body */
+    .modal-body {
+      overflow-y: auto;
+      flex: 1;
+      padding: 2.5rem;
+    }
+
+    .modal-body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .modal-body::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+      background: var(--accent-green);
+      border-radius: 10px;
+    }
+
+    .detail-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    .detail-emoji {
+      font-size: 6rem;
+      margin-bottom: 1rem;
+      display: block;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .detail-name {
+      font-family: 'Fraunces', serif;
+      font-size: 3rem;
+      font-weight: 600;
+      color: var(--accent-green);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .detail-scientific {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .detail-tag {
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      padding: 0.6rem 1.2rem;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 2px solid var(--border-color);
+      font-weight: 700;
+    }
+
+    .detail-tag.light { background: #fff9e6; color: #b8860b; border-color: #b8860b; }
+    .detail-tag.medium { background: #e8f5e9; color: #2e7d32; border-color: #2e7d32; }
+    .detail-tag.low { background: #e3f2fd; color: #1565c0; border-color: #1565c0; }
+
+    .detail-section {
+      background: var(--card-solid);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 15px var(--shadow-soft);
+      animation: fadeInUp 0.6s ease-out backwards;
+      transition: all 0.3s ease;
+    }
+
+    .detail-section:hover {
+      box-shadow: 0 4px 25px var(--shadow-medium);
+      transform: translateY(-2px);
+    }
+
+    .detail-section:nth-child(1) { animation-delay: 0.1s; }
+    .detail-section:nth-child(2) { animation-delay: 0.2s; }
+    .detail-section:nth-child(3) { animation-delay: 0.3s; }
+
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--accent-green);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-icon {
+      font-size: 1.5rem;
+    }
+
+    .section-content {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    .care-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .care-item {
+      background: var(--bg-secondary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .care-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .care-value {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .benefits-list {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .benefits-list li {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: start;
+      gap: 0.75rem;
+    }
+
+    .benefits-list li:last-child {
+      border-bottom: none;
+    }
+
+    .benefit-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: var(--card-solid);
+      border: 2px solid var(--border-color);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      transition: all 0.3s;
+      z-index: 10;
+    }
+
+    .close-modal:hover {
+      background: var(--accent-green);
+      color: white;
+      border-color: var(--accent-green);
+      transform: rotate(90deg);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+        width: 50px;
+        height: 50px;
+      }
+
+      .theme-icon {
+        font-size: 1.5rem;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+
+      .upload-section {
+        padding: 2rem 1rem;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .plants-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-content {
+        max-height: 95vh;
+      }
+
+      .modal-body {
+        padding: 1.5rem;
+      }
+
+      .detail-name {
+        font-size: 2rem;
+      }
+
+      .detail-emoji {
+        font-size: 4rem;
+      }
+
+      .care-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .plant-scroll-item {
+        width: 80px;
+      }
+
+      .scroll-emoji {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Dark Mode Toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <div class="container">
+    <header>
+      <h1>Plantify</h1>
+      <p class="subtitle">Discover Your Perfect Plant Match</p>
+    </header>
+
+    <section class="upload-section" id="uploadSection">
+      <div class="upload-icon">🌿</div>
+      <label class="upload-label">Upload Your Room Photo</label>
+      <p class="upload-hint">We'll analyze the colors and lighting to recommend the perfect plants</p>
+      <input type="file" id="imageInput" accept="image/*">
+      <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
+        Choose Image
+      </button>
+      <div id="imagePreview"></div>
+    </section>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p class="loading-text">Analyzing your space...</p>
+    </div>
+
+    <section class="analysis-info" id="analysisInfo">
+      <div class="analysis-grid">
+        <div class="analysis-item">
+          <div class="color-swatch" id="colorSwatch"></div>
+          <div class="analysis-label">Dominant Color</div>
+          <div class="analysis-value" id="colorName">—</div>
+        </div>
+        <div class="analysis-item">
+          <div class="analysis-label">Color Tone</div>
+          <div class="analysis-value" id="colorTone">—</div>
+        </div>
+        <div class="analysis-item">
+          <div class="analysis-label">Brightness</div>
+          <div class="analysis-value" id="brightness">—</div>
+        </div>
+        <div class="analysis-item">
+          <div class="analysis-label">Light Level</div>
+          <div class="analysis-value" id="lightLevel">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="results-section" id="resultsSection">
+      <div class="results-header">
+        <h2 class="results-title">Your Perfect Plant Matches</h2>
+        <p class="results-subtitle">Curated based on your room's unique characteristics</p>
+      </div>
+      <div class="plants-grid" id="plantsGrid"></div>
+    </section>
+  </div>
+
+  <!-- Plant Detail Modal -->
+  <div class="modal-overlay" id="plantModal">
+    <div class="modal-content">
+      <div class="close-modal" onclick="closeModal()">✕</div>
+      
+      <!-- Horizontal Plant Scroll -->
+      <div class="plant-scroll-container">
+        <div class="plant-scroll" id="plantScroll"></div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body" id="modalBody">
+        <!-- Content will be dynamically loaded -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('.theme-icon');
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    
+    // Set initial theme
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      
+      // Add fun spin animation
+      themeToggle.style.transform = 'rotate(360deg)';
+      setTimeout(() => {
+        themeToggle.style.transform = '';
+      }, 400);
+    });
+
+    // Comprehensive plant database
+    const plants = [
+      {
+        name: "Snake Plant",
+        scientific: "Sansevieria trifasciata",
+        emoji: "🌵",
+        light: ["low", "medium"],
+        colorPreference: ["light", "neutral"],
+        maintenance: "low",
+        description: "Virtually indestructible and air-purifying. Perfect for beginners and low-light spaces.",
+        bestFor: "Bedrooms and offices with minimal natural light",
+        wateringFrequency: "Every 2-3 weeks",
+        humidity: "Low to average",
+        temperature: "60-85°F",
+        toxicity: "Toxic to pets",
+        fullDescription: "The Snake Plant is one of the most resilient houseplants you can grow. It thrives on neglect and can survive in extremely low light conditions. Its upright, sword-like leaves add a modern architectural element to any space. NASA studies have shown it's excellent at filtering indoor air pollutants.",
+        careInstructions: "Allow soil to dry completely between waterings. Overwatering is the most common mistake. Wipe leaves occasionally to remove dust. Prefers bright indirect light but tolerates low light remarkably well.",
+        benefits: [
+          { icon: "🌙", text: "Releases oxygen at night, improving sleep quality" },
+          { icon: "🌬️", text: "Removes toxins like formaldehyde and benzene" },
+          { icon: "💪", text: "Extremely drought-tolerant and hard to kill" },
+          { icon: "🎨", text: "Available in various cultivars with different patterns" }
+        ]
+      },
+      {
+        name: "Peace Lily",
+        scientific: "Spathiphyllum",
+        emoji: "🕊️",
+        light: ["low", "medium"],
+        colorPreference: ["light", "cool"],
+        maintenance: "low",
+        description: "Elegant white blooms and excellent air purification. Tells you when it needs water by drooping slightly.",
+        bestFor: "Bathrooms and shaded corners",
+        wateringFrequency: "Weekly",
+        humidity: "Medium to high",
+        temperature: "65-80°F",
+        toxicity: "Toxic to pets",
+        fullDescription: "Peace Lilies are beloved for their graceful white flowers and glossy green leaves. They're one of the few plants that bloom reliably indoors. The plant literally tells you when it's thirsty by drooping dramatically, then perks right back up after watering.",
+        careInstructions: "Keep soil consistently moist but not waterlogged. Mist leaves regularly or place on a pebble tray for humidity. Remove spent flowers and yellow leaves. Thrives in bathrooms due to higher humidity.",
+        benefits: [
+          { icon: "🏆", text: "NASA's top air-purifying plant" },
+          { icon: "💧", text: "Increases room humidity naturally" },
+          { icon: "🌸", text: "Beautiful white blooms year-round" },
+          { icon: "📢", text: "Clearly communicates watering needs" }
+        ]
+      },
+      {
+        name: "Monstera Deliciosa",
+        scientific: "Monstera deliciosa",
+        emoji: "🌿",
+        light: ["medium", "high"],
+        colorPreference: ["dark", "neutral"],
+        maintenance: "medium",
+        description: "Iconic split leaves that create dramatic visual impact. A true statement plant for modern spaces.",
+        bestFor: "Living rooms with bright indirect light",
+        wateringFrequency: "Weekly",
+        humidity: "Medium to high",
+        temperature: "65-85°F",
+        toxicity: "Toxic to pets",
+        fullDescription: "The Monstera's distinctive split leaves make it instantly recognizable and incredibly popular. As it matures, the fenestrations (holes and splits) become more pronounced. In its natural habitat, it climbs trees and can grow leaves over 3 feet wide!",
+        careInstructions: "Water when top 2 inches of soil are dry. Provide a moss pole for climbing. Clean leaves monthly with a damp cloth. Rotate plant for even growth. Young plants have solid leaves; splits develop with maturity.",
+        benefits: [
+          { icon: "🎭", text: "Dramatic architectural presence" },
+          { icon: "📈", text: "Grows quickly with proper care" },
+          { icon: "✂️", text: "Easy to propagate and share" },
+          { icon: "🌳", text: "Can grow into an impressive indoor tree" }
+        ]
+      },
+      {
+        name: "Rubber Plant",
+        scientific: "Ficus elastica",
+        emoji: "🌳",
+        light: ["medium", "high"],
+        colorPreference: ["dark", "warm"],
+        maintenance: "medium",
+        description: "Bold, glossy leaves in deep burgundy or green. Grows into an impressive indoor tree.",
+        bestFor: "Spaces with rich, warm color schemes",
+        wateringFrequency: "Weekly",
+        humidity: "Average",
+        temperature: "60-75°F",
+        toxicity: "Toxic to pets",
+        fullDescription: "Rubber Plants have stunning, glossy leaves that come in deep green or burgundy varieties. They can grow quite tall indoors and make excellent floor plants. The thick, waxy leaves are naturally dust-resistant and add a sophisticated touch to any room.",
+        careInstructions: "Keep soil slightly moist during growing season, drier in winter. Wipe leaves regularly to maintain shine. Bright, indirect light brings out the best color. Prune to control height and encourage bushiness.",
+        benefits: [
+          { icon: "🎨", text: "Available in green, burgundy, and variegated forms" },
+          { icon: "🧹", text: "Natural air purifier" },
+          { icon: "💎", text: "Glossy leaves add elegance" },
+          { icon: "📏", text: "Can be pruned to desired size" }
+        ]
+      },
+      {
+        name: "Areca Palm",
+        scientific: "Dypsis lutescens",
+        emoji: "🌴",
+        light: ["medium", "high"],
+        colorPreference: ["warm", "neutral"],
+        maintenance: "medium",
+        description: "Graceful, arching fronds that bring tropical vibes. Natural air humidifier.",
+        bestFor: "Sunny rooms with warm, earthy tones",
+        wateringFrequency: "2-3 times per week",
+        humidity: "Medium to high",
+        temperature: "65-75°F",
+        toxicity: "Non-toxic to pets",
+        fullDescription: "The Areca Palm brings instant tropical vacation vibes to your space. Its feathery, arching fronds can reach 6-7 feet indoors. This palm is not only beautiful but also functions as a natural humidifier, releasing moisture into the air.",
+        careInstructions: "Keep soil consistently moist but not soggy. Needs bright, indirect light. Mist regularly or use a humidifier. Yellow tips indicate underwatering or low humidity. Remove dead fronds at the base.",
+        benefits: [
+          { icon: "💦", text: "Natural air humidifier" },
+          { icon: "🌴", text: "Creates tropical atmosphere" },
+          { icon: "🐾", text: "Safe for pets" },
+          { icon: "🌿", text: "Excellent air purifier" }
+        ]
+      },
+      {
+        name: "ZZ Plant",
+        scientific: "Zamioculcas zamiifolia",
+        emoji: "✨",
+        light: ["low", "medium"],
+        colorPreference: ["cool", "neutral"],
+        maintenance: "low",
+        description: "Waxy, glossy leaves with exceptional drought tolerance. Thrives on neglect.",
+        bestFor: "Cool-toned minimalist spaces",
+        wateringFrequency: "Every 2-3 weeks",
+        humidity: "Low to average",
+        temperature: "60-75°F",
+        toxicity: "Toxic to pets",
+        fullDescription: "The ZZ Plant is virtually indestructible, making it perfect for beginners or busy people. Its waxy, emerald-green leaves look almost artificial in their perfection. The plant stores water in its rhizomes, allowing it to survive weeks without watering.",
+        careInstructions: "Allow soil to dry completely between waterings. Thrives on neglect. Wipe leaves occasionally. Tolerates low light but grows faster in bright indirect light. Rarely needs fertilizing.",
+        benefits: [
+          { icon: "💤", text: "Thrives on neglect" },
+          { icon: "✨", text: "Glossy, attractive foliage" },
+          { icon: "🌑", text: "Tolerates very low light" },
+          { icon: "⏰", text: "Slow-growing and compact" }
+        ]
+      },
+      {
+        name: "Pothos",
+        scientific: "Epipremnum aureum",
+        emoji: "🍃",
+        light: ["low", "medium", "high"],
+        colorPreference: ["light", "neutral", "warm"],
+        maintenance: "low",
+        description: "Trailing vines perfect for shelves and hanging baskets. Adapts to almost any condition.",
+        bestFor: "Any space - incredibly versatile",
+        wateringFrequency: "Weekly",
+        humidity: "Average",
+        temperature: "65-85°F",
+        toxicity: "Toxic to pets",
+        fullDescription: "Pothos is the ultimate starter plant and can adapt to almost any growing condition. Its cascading vines can grow several feet long, making it perfect for hanging baskets or trailing from shelves. Available in golden, marble, neon, and other stunning varieties.",
+        careInstructions: "Water when top inch of soil is dry. Grows in water or soil. Prune to encourage bushiness. Can tolerate neglect and low light. Propagates easily from cuttings placed in water.",
+        benefits: [
+          { icon: "🌈", text: "Available in many color varieties" },
+          { icon: "📍", text: "Grows anywhere - shelves, baskets, walls" },
+          { icon: "✂️", text: "Super easy to propagate" },
+          { icon: "🛡️", text: "Nearly impossible to kill" }
+        ]
+      },
+      {
+        name: "Fiddle Leaf Fig",
+        scientific: "Ficus lyrata",
+        emoji: "🎻",
+        light: ["high"],
+        colorPreference: ["light", "neutral"],
+        maintenance: "high",
+        description: "Large, violin-shaped leaves make a bold architectural statement. Requires consistent care.",
+        bestFor: "Bright, airy spaces with commitment to care",
+        wateringFrequency: "Weekly",
+        humidity: "Medium",
+        temperature: "65-75°F",
+        toxicity: "Toxic to pets",
+        fullDescription: "The Fiddle Leaf Fig is a showstopper with its large, glossy, violin-shaped leaves. It's become a design icon in modern interiors. While it requires more attention than other plants, the dramatic impact is worth the effort for dedicated plant parents.",
+        careInstructions: "Needs bright, indirect light. Water when top 2 inches of soil are dry. Hates being moved - choose its spot carefully. Wipe leaves weekly. Rotate regularly for even growth. Sensitive to drafts and temperature changes.",
+        benefits: [
+          { icon: "🏛️", text: "Architectural statement piece" },
+          { icon: "📸", text: "Instagram-worthy beauty" },
+          { icon: "🎨", text: "Large, sculptural leaves" },
+          { icon: "📏", text: "Can grow 6-10 feet indoors" }
+        ]
+      },
+      {
+        name: "Spider Plant",
+        scientific: "Chlorophytum comosum",
+        emoji: "🕷️",
+        light: ["medium", "high"],
+        colorPreference: ["light", "cool"],
+        maintenance: "low",
+        description: "Cascading variegated leaves with baby plantlets. Excellent air purifier and easy to propagate.",
+        bestFor: "Hanging baskets in bright spaces",
+        wateringFrequency: "2-3 times per week",
+        humidity: "Average",
+        temperature: "60-75°F",
+        toxicity: "Non-toxic to pets",
+        fullDescription: "Spider Plants are charming, easy-care plants that produce baby plants (spiderettes) on long stems. These babies can be propagated to create new plants or left attached for a cascading effect. The variegated leaves add visual interest to any space.",
+        careInstructions: "Keep soil slightly moist. Thrives in bright, indirect light. Brown tips indicate fluoride in water - use distilled water. Easy to propagate by planting or rooting spiderettes. Tolerates some neglect.",
+        benefits: [
+          { icon: "👶", text: "Produces adorable baby plants" },
+          { icon: "🐾", text: "Safe for curious pets" },
+          { icon: "🌬️", text: "Excellent air purifier" },
+          { icon: "🎁", text: "Easy to share with friends" }
+        ]
+      },
+      {
+        name: "Chinese Evergreen",
+        scientific: "Aglaonema",
+        emoji: "🎨",
+        light: ["low", "medium"],
+        colorPreference: ["dark", "cool", "neutral"],
+        maintenance: "low",
+        description: "Stunning patterned foliage in silver, pink, or red. Highly adaptable and forgiving.",
+        bestFor: "Low-light areas with cool color palettes",
+        wateringFrequency: "Weekly",
+        humidity: "Average to high",
+        temperature: "65-80°F",
+        toxicity: "Toxic to pets",
+        fullDescription: "Chinese Evergreens are prized for their colorful, patterned leaves that come in pink, red, silver, and green combinations. They're incredibly tolerant of low light and neglect, making them perfect for offices or dimly lit rooms.",
+        careInstructions: "Allow top inch of soil to dry between waterings. Tolerates low light but colors pop in brighter conditions. Wipe leaves to remove dust. Slow-growing and stays compact. Minimal fertilizing needed.",
+        benefits: [
+          { icon: "🎨", text: "Stunning leaf patterns and colors" },
+          { icon: "🌑", text: "Thrives in low light" },
+          { icon: "🔇", text: "Quiet, undemanding growth" },
+          { icon: "💼", text: "Perfect for offices" }
+        ]
+      },
+      {
+        name: "Boston Fern",
+        scientific: "Nephrolepis exaltata",
+        emoji: "🌾",
+        light: ["medium"],
+        colorPreference: ["cool", "neutral"],
+        maintenance: "medium",
+        description: "Lush, feathery fronds that love humidity. Classic beauty for bathrooms and kitchens.",
+        bestFor: "Humid spaces with indirect light",
+        wateringFrequency: "2-3 times per week",
+        humidity: "High",
+        temperature: "60-75°F",
+        toxicity: "Non-toxic to pets",
+        fullDescription: "Boston Ferns are lush, romantic plants with delicate, feathery fronds. They're humidity lovers that thrive in bathrooms or kitchens. While they need more attention than some plants, their soft, cascading growth is absolutely worth it.",
+        careInstructions: "Keep soil consistently moist, never dry. Mist daily or place on pebble tray. Prefers cool temperatures. Trim brown fronds at base. Bathrooms provide ideal humidity. May go dormant in winter.",
+        benefits: [
+          { icon: "💚", text: "Lush, romantic appearance" },
+          { icon: "🐾", text: "Safe for pets" },
+          { icon: "💦", text: "Natural humidity indicator" },
+          { icon: "🏡", text: "Classic Victorian charm" }
+        ]
+      },
+      {
+        name: "Philodendron",
+        scientific: "Philodendron hederaceum",
+        emoji: "💚",
+        light: ["low", "medium"],
+        colorPreference: ["warm", "dark"],
+        maintenance: "low",
+        description: "Heart-shaped leaves on climbing or trailing vines. Easy-going and fast-growing.",
+        bestFor: "Warm, cozy spaces",
+        wateringFrequency: "Weekly",
+        humidity: "Average",
+        temperature: "65-80°F",
+        toxicity: "Toxic to pets",
+        fullDescription: "Heartleaf Philodendrons are beloved for their heart-shaped leaves and easygoing nature. They grow quickly and can be trained to climb or trail, making them versatile for different display styles. Available in classic green or stunning varieties like Brasil and Micans.",
+        careInstructions: "Water when top inch of soil is dry. Grows in low to bright indirect light. Provide a moss pole for climbing or let trail from baskets. Prune to control size. Wipe leaves occasionally.",
+        benefits: [
+          { icon: "❤️", text: "Adorable heart-shaped leaves" },
+          { icon: "🚀", text: "Fast-growing and vigorous" },
+          { icon: "🎨", text: "Many colorful varieties available" },
+          { icon: "🧗", text: "Versatile - climb or trail" }
+        ]
+      },
+      {
+        name: "Aloe Vera",
+        scientific: "Aloe barbadensis",
+        emoji: "🩹",
+        light: ["high"],
+        colorPreference: ["warm", "light"],
+        maintenance: "low",
+        description: "Medicinal succulent with healing gel. Drought-tolerant and sun-loving.",
+        bestFor: "Sunny windowsills with warm tones",
+        wateringFrequency: "Every 2-3 weeks",
+        humidity: "Low",
+        temperature: "55-80°F",
+        toxicity: "Toxic to pets (edible for humans)",
+        fullDescription: "Aloe Vera is both beautiful and functional. The gel inside its thick leaves can soothe burns and skin irritations. It's a true succulent that stores water in its leaves, making it incredibly drought-tolerant and perfect for sunny spots.",
+        careInstructions: "Allow soil to dry completely between waterings. Needs bright, direct sunlight. Use cactus/succulent soil. Water less in winter. Produces pups (baby plants) that can be separated and potted.",
+        benefits: [
+          { icon: "🩹", text: "Natural first-aid for burns" },
+          { icon: "☀️", text: "Loves sunny windows" },
+          { icon: "🏜️", text: "Extremely drought-tolerant" },
+          { icon: "👶", text: "Produces baby plants" }
+        ]
+      },
+      {
+        name: "Dracaena",
+        scientific: "Dracaena marginata",
+        emoji: "🗡️",
+        light: ["low", "medium"],
+        colorPreference: ["neutral", "cool"],
+        maintenance: "low",
+        description: "Spiky, architectural foliage on slender trunks. Excellent air purifier.",
+        bestFor: "Modern, minimalist interiors",
+        wateringFrequency: "Weekly",
+        humidity: "Average",
+        temperature: "65-75°F",
+        toxicity: "Toxic to pets",
+        fullDescription: "Dracaena Marginata has a striking, architectural form with spiky leaves on slender, woody stems. It's slow-growing and stays manageable, making it perfect for modern, minimalist spaces. The red-edged leaves add a subtle pop of color.",
+        careInstructions: "Allow top half of soil to dry between waterings. Tolerates low light. Sensitive to fluoride - use distilled water if tips brown. Wipe leaves monthly. Grows slowly and stays compact.",
+        benefits: [
+          { icon: "🏗️", text: "Architectural modern form" },
+          { icon: "🌬️", text: "NASA-approved air cleaner" },
+          { icon: "🐌", text: "Slow-growing, stays manageable" },
+          { icon: "🎨", text: "Red-edged leaves add color" }
+        ]
+      },
+      {
+        name: "Calathea",
+        scientific: "Calathea ornata",
+        emoji: "🦚",
+        light: ["low", "medium"],
+        colorPreference: ["dark", "warm"],
+        maintenance: "high",
+        description: "Intricate patterns and colors that move with the light. A living work of art.",
+        bestFor: "Humid environments with indirect light",
+        wateringFrequency: "2-3 times per week",
+        humidity: "High",
+        temperature: "65-80°F",
+        toxicity: "Non-toxic to pets",
+        fullDescription: "Calatheas are known as 'prayer plants' because their leaves fold up at night like praying hands. Their intricate patterns and vibrant colors make them true living art. They require more care but reward you with daily movement and stunning foliage.",
+        careInstructions: "Keep soil consistently moist but not soggy. High humidity essential - use humidifier. Filtered or distilled water only. Bright, indirect light. Leaves move throughout the day - totally normal!",
+        benefits: [
+          { icon: "🎭", text: "Leaves move and 'pray' at night" },
+          { icon: "🖼️", text: "Stunning patterns and colors" },
+          { icon: "🐾", text: "Safe for pets" },
+          { icon: "💫", text: "Living, moving artwork" }
+        ]
+      }
+    ];
+
+    let currentAnalysis = null;
+    let currentPlants = [];
+
+    // Image upload handler
+    document.getElementById('imageInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          displayImage(event.target.result);
+          analyzeImage(event.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    function displayImage(src) {
+      const preview = document.getElementById('imagePreview');
+      preview.innerHTML = `<img src="${src}" alt="Room preview">`;
+      document.getElementById('uploadSection').classList.add('active');
+    }
+
+    function analyzeImage(src) {
+      document.getElementById('loading').classList.add('visible');
+      document.getElementById('resultsSection').classList.remove('visible');
+      document.getElementById('analysisInfo').classList.remove('visible');
+
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Resize for performance
+        const maxSize = 400;
+        const scale = Math.min(maxSize / img.width, maxSize / img.height);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        // Get image data
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        
+        // Analyze colors
+        const analysis = analyzeColors(data);
+        currentAnalysis = analysis;
+        
+        // Simulate processing time for better UX
+        setTimeout(() => {
+          displayAnalysis(analysis);
+          displayResults(analysis);
+          document.getElementById('loading').classList.remove('visible');
+        }, 1500);
+      };
+      img.src = src;
+    }
+
+    function analyzeColors(data) {
+      let r = 0, g = 0, b = 0;
+      const pixelCount = data.length / 4;
+      
+      // Calculate average color
+      for (let i = 0; i < data.length; i += 4) {
+        r += data[i];
+        g += data[i + 1];
+        b += data[i + 2];
+      }
+      
+      r = Math.floor(r / pixelCount);
+      g = Math.floor(g / pixelCount);
+      b = Math.floor(b / pixelCount);
+      
+      // Calculate brightness (0-100)
+      const brightness = Math.floor(((r + g + b) / 3 / 255) * 100);
+      
+      // Determine light level
+      let lightLevel;
+      if (brightness < 30) lightLevel = 'low';
+      else if (brightness < 60) lightLevel = 'medium';
+      else lightLevel = 'high';
+      
+      // Determine color tone
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      const saturation = max === 0 ? 0 : (max - min) / max;
+      
+      let colorTone;
+      if (saturation < 0.15) {
+        colorTone = 'neutral';
+      } else if (r > g && r > b) {
+        colorTone = 'warm';
+      } else if (b > r && b > g) {
+        colorTone = 'cool';
+      } else if (g > r && g > b) {
+        colorTone = b > r ? 'cool' : 'neutral';
+      } else {
+        colorTone = 'neutral';
+      }
+      
+      // Determine light/dark
+      const lightDark = brightness > 50 ? 'light' : 'dark';
+      
+      // Color name
+      const colorName = getColorName(r, g, b);
+      
+      return {
+        rgb: { r, g, b },
+        hex: rgbToHex(r, g, b),
+        brightness,
+        lightLevel,
+        colorTone,
+        lightDark,
+        colorName
+      };
+    }
+
+    function rgbToHex(r, g, b) {
+      return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    function getColorName(r, g, b) {
+  const brightness = (r + g + b) / 3;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const saturation = max === 0 ? 0 : (max - min) / max;
+
+  // ---------- VERY DARK ----------
+  if (brightness < 30) return "Pitch Black";
+  if (brightness < 50) {
+    if (r > g && r > b) return "Deep Maroon";
+    if (g > r && g > b) return "Dark Olive";
+    if (b > r && b > g) return "Midnight Blue";
+    return "Charcoal";
+  }
+
+  // ---------- LIGHT / OFF-WHITE ----------
+  if (brightness > 235) return "Pure White";
+  if (brightness > 215) {
+    if (saturation < 0.1) return "Ivory";
+    if (r > g && r > b) return "Peach";
+    if (g > r && g > b) return "Mint";
+    if (b > r && b > g) return "Ice Blue";
+    return "Pearl";
+  }
+
+  // ---------- NEUTRALS ----------
+  if (saturation < 0.12) {
+    if (brightness < 80) return "Slate Gray";
+    if (brightness < 130) return "Stone";
+    if (brightness < 180) return "Taupe";
+    return "Linen";
+  }
+
+  // ---------- RED FAMILY ----------
+  if (r > g && r > b) {
+    if (brightness < 90) return "Burgundy";
+    if (brightness < 130) return "Terracotta";
+    if (brightness < 170) {
+      if (saturation > 0.6) return "Crimson";
+      return "Rosewood";
+    }
+    if (brightness < 200) return "Blush";
+    return "Coral";
+  }
+
+  // ---------- GREEN FAMILY ----------
+  if (g > r && g > b) {
+    if (brightness < 90) return "Forest Green";
+    if (brightness < 130) return "Olive";
+    if (brightness < 170) {
+      if (saturation > 0.5) return "Emerald";
+      return "Sage";
+    }
+    return "Mint Green";
+  }
+
+  // ---------- BLUE FAMILY ----------
+  if (b > r && b > g) {
+    if (brightness < 90) return "Navy";
+    if (brightness < 130) return "Denim";
+    if (brightness < 170) {
+      if (saturation > 0.6) return "Royal Blue";
+      return "Steel Blue";
+    }
+    return "Sky Blue";
+  }
+
+  // ---------- MIXED / SECONDARY ----------
+  if (r > b && g > b) {
+    if (brightness < 120) return "Mustard";
+    return "Warm Sand";
+  }
+
+  if (r > g && b > g) {
+    if (brightness < 120) return "Plum";
+    return "Lavender";
+  }
+
+  if (g > r && b > r) {
+    if (brightness < 120) return "Teal";
+    return "Aqua";
+  }
+
+  // ---------- FALLBACK ----------
+  return "Natural Tone";
+}
+
+    function displayAnalysis(analysis) {
+      document.getElementById('colorSwatch').style.backgroundColor = analysis.hex;
+      document.getElementById('colorName').textContent = analysis.colorName;
+      document.getElementById('colorTone').textContent = analysis.colorTone.charAt(0).toUpperCase() + analysis.colorTone.slice(1);
+      document.getElementById('brightness').textContent = `${analysis.brightness}%`;
+      document.getElementById('lightLevel').textContent = analysis.lightLevel.charAt(0).toUpperCase() + analysis.lightLevel.slice(1);
+      
+      document.getElementById('analysisInfo').classList.add('visible');
+    }
+
+    function displayResults(analysis) {
+      const scored = plants.map(plant => ({
+        ...plant,
+        score: calculateScore(plant, analysis)
+      }));
+      
+      // Sort by score
+      scored.sort((a, b) => b.score - a.score);
+      
+      // Take top matches and store globally
+      currentPlants = scored.slice(0, 6);
+      
+      const grid = document.getElementById('plantsGrid');
+      grid.innerHTML = currentPlants.map((plant, index) => `
+        <div class="plant-card" onclick="openModal(${index})">
+          <div class="plant-image">${plant.emoji}</div>
+          <div class="plant-content">
+            <h3 class="plant-name">${plant.name}</h3>
+            <p class="plant-scientific">${plant.scientific}</p>
+            <div class="plant-tags">
+              <span class="tag light">${plant.light.join('/')}</span>
+              <span class="tag low">${plant.maintenance}</span>
+            </div>
+            <p class="plant-description">${plant.description}</p>
+            <div class="match-score">
+              <span class="match-label">Match</span>
+              <div class="match-bar">
+                <div class="match-fill" style="width: ${plant.score}%"></div>
+              </div>
+              <span class="match-percentage">${plant.score}%</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      
+      document.getElementById('resultsSection').classList.add('visible');
+      
+      // Smooth scroll to results
+      setTimeout(() => {
+        document.getElementById('resultsSection').scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }, 300);
+    }
+
+    function calculateScore(plant, analysis) {
+      let score = 0; // Start from 0 instead of 50
+      
+      // Light level match (40 points max)
+      if (plant.light.includes(analysis.lightLevel)) {
+        score += 40; // Perfect match
+      } else {
+        // Partial credit for adjacent levels
+        if (analysis.lightLevel === 'medium') {
+          score += 20; // Medium is somewhat compatible with all
+        } else if (
+          (analysis.lightLevel === 'low' && plant.light.includes('medium')) ||
+          (analysis.lightLevel === 'high' && plant.light.includes('medium'))
+        ) {
+          score += 15; // Adjacent level
+        } else {
+          score += 5; // Wrong light level is a poor match
+        }
+      }
+      
+      // Color preference match (30 points max)
+      let colorMatch = 0;
+      if (plant.colorPreference.includes(analysis.colorTone)) {
+        colorMatch += 15;
+      }
+      if (plant.colorPreference.includes(analysis.lightDark)) {
+        colorMatch += 15;
+      }
+      // Neutral plants get partial points regardless
+      if (plant.colorPreference.includes('neutral') && colorMatch === 0) {
+        colorMatch += 10;
+      }
+      score += colorMatch;
+      
+      // Brightness compatibility (15 points max)
+      if (plant.light.includes('high') && analysis.brightness > 70) {
+        score += 15; // High light plant in bright room - perfect!
+      } else if (plant.light.includes('low') && analysis.brightness < 40) {
+        score += 15; // Low light plant in dark room - perfect!
+      } else if (plant.light.includes('medium')) {
+        score += 10; // Medium light is versatile
+      } else {
+        score += 5; // Not ideal but workable
+      }
+      
+      // Maintenance bonus (10 points max)
+      if (plant.maintenance === 'low') {
+        score += 10; // Everyone loves easy plants
+      } else if (plant.maintenance === 'medium') {
+        score += 5;
+      }
+      
+      // Versatility bonus (5 points max)
+      // Plants that work in multiple light conditions get a small bonus
+      if (plant.light.length >= 2) {
+        score += 5;
+      }
+      
+      // Ensure score is between 45 and 95 for realistic ranges
+      // Top matches should be 80-95, decent matches 60-75, poor matches 45-60
+      return Math.min(Math.max(Math.round(score), 45), 95);
+    }
+
+    // Drag and drop functionality
+    const uploadSection = document.getElementById('uploadSection');
+    
+    uploadSection.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadSection.classList.add('active');
+    });
+    
+    uploadSection.addEventListener('dragleave', () => {
+      uploadSection.classList.remove('active');
+    });
+    
+    uploadSection.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadSection.classList.remove('active');
+      
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          displayImage(event.target.result);
+          analyzeImage(event.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Modal Functions
+    function openModal(index) {
+      const modal = document.getElementById('plantModal');
+      modal.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+      
+      // Build horizontal scroll
+      buildPlantScroll(index);
+      
+      // Show plant details
+      showPlantDetails(index);
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('plantModal');
+      modal.classList.remove('visible');
+      document.body.style.overflow = 'auto';
+    }
+
+    function buildPlantScroll(activeIndex) {
+      const scrollContainer = document.getElementById('plantScroll');
+      scrollContainer.innerHTML = currentPlants.map((plant, index) => `
+        <div class="plant-scroll-item ${index === activeIndex ? 'active' : ''}" 
+             onclick="showPlantDetails(${index})">
+          <span class="scroll-emoji">${plant.emoji}</span>
+          <div class="scroll-name">${plant.name}</div>
+        </div>
+      `).join('');
+      
+      // Scroll active item into view
+      setTimeout(() => {
+        const activeItem = scrollContainer.querySelector('.plant-scroll-item.active');
+        if (activeItem) {
+          activeItem.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      }, 100);
+    }
+
+    function showPlantDetails(index) {
+      const plant = currentPlants[index];
+      const modalBody = document.getElementById('modalBody');
+      
+      // Update scroll active state
+      document.querySelectorAll('.plant-scroll-item').forEach((item, i) => {
+        item.classList.toggle('active', i === index);
+      });
+      
+      // Scroll active item into view
+      const scrollContainer = document.getElementById('plantScroll');
+      const activeItem = scrollContainer.querySelectorAll('.plant-scroll-item')[index];
+      if (activeItem) {
+        activeItem.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+      
+      modalBody.innerHTML = `
+        <div class="detail-header">
+          <span class="detail-emoji">${plant.emoji}</span>
+          <h2 class="detail-name">${plant.name}</h2>
+          <p class="detail-scientific">${plant.scientific}</p>
+          <div class="detail-tags">
+            <span class="detail-tag light">${plant.light.join(' / ').toUpperCase()} LIGHT</span>
+            <span class="detail-tag low">${plant.maintenance.toUpperCase()} MAINTENANCE</span>
+            ${plant.toxicity ? `<span class="detail-tag medium">${plant.toxicity.toUpperCase()}</span>` : ''}
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3 class="section-title">
+            <span class="section-icon">📖</span>
+            About This Plant
+          </h3>
+          <div class="section-content">
+            ${plant.fullDescription}
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3 class="section-title">
+            <span class="section-icon">💧</span>
+            Care Requirements
+          </h3>
+          <div class="care-grid">
+            <div class="care-item">
+              <div class="care-label">Watering</div>
+              <div class="care-value">${plant.wateringFrequency}</div>
+            </div>
+            <div class="care-item">
+              <div class="care-label">Humidity</div>
+              <div class="care-value">${plant.humidity}</div>
+            </div>
+            <div class="care-item">
+              <div class="care-label">Temperature</div>
+              <div class="care-value">${plant.temperature}</div>
+            </div>
+          </div>
+          <div class="section-content" style="margin-top: 1.5rem;">
+            ${plant.careInstructions}
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3 class="section-title">
+            <span class="section-icon">✨</span>
+            Why You'll Love It
+          </h3>
+          <ul class="benefits-list">
+            ${plant.benefits.map(benefit => `
+              <li>
+                <span class="benefit-icon">${benefit.icon}</span>
+                <span>${benefit.text}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+      
+      // Scroll to top of modal body
+      modalBody.scrollTop = 0;
+    }
+
+    // Close modal on overlay click
+    document.getElementById('plantModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
